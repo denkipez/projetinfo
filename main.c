@@ -46,7 +46,7 @@ typedef struct position
 
 
 typedef struct joueur
-{
+{ //ll
     char nom[50];
     int couleur;
     int *score;

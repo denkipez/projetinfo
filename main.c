@@ -86,7 +86,8 @@ void infonewpartie(t_joueur* premier, t_joueur* second)
         case 2 :
             system("cls");
             affichePlateau();
-            printf("Il y a 2 joueurs ou 4 joueurs possibles dans une partie (choix a faire avant de lancer la partie.)\n - tous les joueurs sont humains.\n Les joueurs jouent à tour de role tel que defini dans les regles. Chaque joueur saisi son nom. Leur ordre de jeu est defini par hasard. C’est le joueur1 qui commence.\n Le nom de chaque joueur sera stocké pour la partie. S’il a deja joué et est connu alors il prendra son score precedemment sauvegarde.\n Le jeton du joueur sera pris au hasard parmi les caractères suivants :\n @ * # & % ? £ $ \n Chaque joueur aura son symbole unique.\n ");
+            printf("Il y a 2 joueurs ou 4 joueurs possibles dans une partie (choix a faire avant de lancer la partie.)\n - tous les joueurs sont humains.\nLes joueurs jouent à tour de role tel que defini dans les regles. Chaque joueur saisi son nom. Leur ordre de jeu est defini par hasard. C’est le joueur1 qui commence.\nLe nom de chaque joueur sera stocke pour la partie. S il a deja joue et est connu alors il prendra son score precedemment sauvegarde.\nLe jeton du joueur sera choisi par le joueur parmis les caracteres suivants :\n %c %c %c %c %c %c %c %c %c\n %c %c %c %c %c %c %c %c %c\n",0x3F,0x23,0x26,0x40,0x25,0x24,0x0C,0x11,0x0B,0x02,0x03,0x04,0x05,0x0E,0xFE,0x06,0x0F,0x10);
+            printf("Chaque joueur aura son symbole unique.\n ");
             printf("                                0. Retour au menu aide                \n");
             Aide(MenuAide(RETOUR()));
             break;
@@ -203,6 +204,7 @@ int saisiejoueurs(int a)
         printf("%d",i);
         printf("Veuillez saisir le nom du joueur\n");
         scanf("%s",&(T[i].nom));
+        fprintf(fichier,"%s",T[i].nom);
 
         do
         {
@@ -225,6 +227,7 @@ int saisiejoueurs(int a)
             printf("              14 : Magenta"); Color(14,0);
             printf("                15 : Jaune clair\n"); Color(15,0);
             scanf("%d",&T[i].couleur);
+            fprintf(fichier," %d",T[i].couleur);
         }
         while ((T[i].couleur<1) || (T[i].couleur>15));
         do
@@ -255,63 +258,84 @@ int saisiejoueurs(int a)
         while((choix6>18) || (choix6<1));
         switch(choix6)
         {
-        case 1 :
+            case 1 :
             T[i].sigle=0x02;
+            fprintf(fichier," %d",1);
             break;
         case 2 :
             T[i].sigle=0x03;
+            fprintf(fichier," %d",2);
             break;
         case 3 :
              T[i].sigle=0x04;
+             fprintf(fichier," %d",3);
              break;
         case 4 :
              T[i].sigle=0x05;
+             fprintf(fichier," %d",4);
              break;
         case 5 :
              T[i].sigle=0x06;
+             fprintf(fichier," %d",5);
              break;
         case 6 :
              T[i].sigle=0xFE;
+             fprintf(fichier," %d",6);
              break;
         case 7 :
              T[i].sigle=0x10;
+             fprintf(fichier," %d",7);
              break;
         case 8 :
              T[i].sigle=0x0E;
+             fprintf(fichier," %d",8);
              break;
         case 9 :
              T[i].sigle=0x0F;
+             fprintf(fichier," %d",9);
              break;
         case 10 :
              T[i].sigle=0x11;
+             fprintf(fichier," %d",10);
              break;
         case 11 :
              T[i].sigle=0x0B;
+             fprintf(fichier," %d",11);
              break;
         case 12 :
              T[i].sigle=0x0C;
+             fprintf(fichier," %d",12);
              break;
         case 13 :
              T[i].sigle=0x24;
+             fprintf(fichier,"% d",13);
              break;
         case 14 :
              T[i].sigle=0x25;
+             fprintf(fichier,"% d",14);
              break;
         case 15 :
              T[i].sigle=0x40;
+             fprintf(fichier,"% d",15);
              break;
         case 16 :
              T[i].sigle=0x26;
+             fprintf(fichier," %d",16);
              break;
         case 17 :
              T[i].sigle=0x23;
+             fprintf(fichier," %d",17);
              break;
         case 18 :
              T[i].sigle=0x3F;
+             fprintf(fichier," %d",18);
              break;
         default : printf("Erreur!\n");
 
+
         }
+        T[i].score=0;
+        fprintf(fichier," %d\n",T[i].score);
         printf("Profil du joueur etabli. Bonne partie !\n");
         i++;
 
@@ -319,6 +343,30 @@ int saisiejoueurs(int a)
     }
     OrdreDePassage(a,T[a]);
 
+}
+
+
+void MenuJoueur()
+{   int choix7;
+    system("cls");
+    char plateau[19][56];
+    affichePlateau(plateau);
+    do
+    {
+        printf("Choix possibles :");
+        printf("1. Deplacer son pion");
+        printf("2. Poser une barriere");
+        printf("3. Passer son tour");
+        printf("4. Annuler l'action précédente");
+        printf("5. Interrompre la partie");
+        scanf("%d",choix7);
+
+    }
+    while ((choix7>5) || (choix7<1));
+    switch(choix7)
+    {
+
+    }
 }
 
 int inputNbJoueurs()
@@ -365,6 +413,88 @@ void OrdreDePassage(int a)
             do { quatriemejoueur=rand()%(a);} while ((quatriemejoueur==premierjoueur) || (quatriemejoueur==secondjoueur) || (quatriemejoueur==troisiemejoueur));
         }
  }
+
+
+ void ReadChar(int transit)
+{       char sigle;
+    switch(transit)
+    {
+        case 1 :
+            sigle=0x02;
+            printf("%c\n",sigle);
+            break;
+        case 2 :
+            sigle=0x03;
+            printf("%c\n",sigle);
+            break;
+        case 3 :
+             sigle=0x04;
+             printf("%c\n",sigle);
+             break;
+        case 4 :
+             sigle=0x05;
+             printf("%c\n",sigle);
+             break;
+        case 5 :
+             sigle=0x06;
+             printf("%c\n",sigle);
+             break;
+        case 6 :
+             sigle=0xFE;
+             printf("%c\n",sigle);
+             break;
+        case 7 :
+             sigle=0x10;
+             printf("%c\n",sigle);
+             break;
+        case 8 :
+             sigle=0x0E;
+             printf("%c\n",sigle);
+             break;
+        case 9 :
+             sigle=0x0F;
+             printf("%c\n",sigle);
+             break;
+        case 10 :
+             sigle=0x11;
+             printf("%c\n",sigle);
+             break;
+        case 11 :
+             sigle=0x0B;
+             printf("%c\n",sigle);
+             break;
+        case 12 :
+             sigle=0x0C;
+             printf("%c\n",sigle);
+             break;
+        case 13 :
+             sigle=0x24;
+             printf("%c\n",sigle);
+             break;
+        case 14 :
+             sigle=0x25;
+             printf("%c\n",sigle);
+             break;
+        case 15 :
+             sigle=0x40;
+             printf("%c\n",sigle);
+             break;
+        case 16 :
+             sigle=0x26;
+             printf("%c\n",sigle);
+             break;
+        case 17 :
+             sigle=0x23;
+             printf("%c\n",sigle);
+             break;
+        case 18 :
+            sigle=0x3F;
+            printf("%c\n",sigle);
+             break;
+        default : printf("ErreurRR!\n");
+    }
+}
+
 
 int menu()
 {

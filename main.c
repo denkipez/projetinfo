@@ -34,7 +34,7 @@ void Color(int couleurDuTexte,int couleurDeFond)
 
 typedef struct plateau
 {
-    int occupant; //Ne sert à rien pr l'instant
+    int occupant; // Ne sert à rien pr l'instant
 }t_plateau;
 
 typedef struct position

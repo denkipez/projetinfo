@@ -69,6 +69,20 @@ void infonewpartie(t_joueur* premier, t_joueur* second)
 
 }
 
+void OrdreDePassage(int a, int *premierjoueur, int *secondjoueur, int *troisiemejoueur, int *quatriemejoueur)
+{
+
+
+     srand(time(NULL));
+     *premierjoueur=rand()%(a);
+     do { *secondjoueur=rand()%(a);} while (*secondjoueur==*premierjoueur);
+     if (a>2)
+        {
+            do { *troisiemejoueur=rand()%(a);} while ( (*troisiemejoueur==*secondjoueur) || (*troisiemejoueur==*premierjoueur));
+            do { *quatriemejoueur=rand()%(a);} while ((*quatriemejoueur==*premierjoueur) || (*quatriemejoueur==*secondjoueur) || (*quatriemejoueur==*troisiemejoueur)); }}
+
+
+
                                             /* Menu AIDE et RETOUR AU MENU PRINCIPAL */
  void Aide(int choix2)
 
@@ -197,9 +211,12 @@ int saisiejoueurs(int a)
     int choix6;
     char plateau[19][56];
     t_joueur T[a-1];
-    //int *premierjoueur,*secondjoueur,*troisiemejoueur,*quatriemejoueur;
+    int *premierjoueur;
+    int *secondjoueur;
+    int *troisiemejoueur;
+    int *quatriemejoueur;
     FILE *fichierJoueur=fopen("SauvegardeJoueurs.txt","a+");
-    while ( i<a)
+    while (i<a)
     {
         system("cls");
         affichePlateau(plateau);
@@ -341,11 +358,14 @@ int saisiejoueurs(int a)
         i++;
 
 
+
     }
+    printf('test');
+    OrdreDePassage(a,&premierjoueur,&secondjoueur,&troisiemejoueur,&quatriemejoueur);
+    printf("%d",(premierjoueur));
+    printf("Le premier à jouer est %s\n",T[*premierjoueur].nom);
+    printf("bateau");
     fclose(fichierJoueur);
-    OrdreDePassage(a);
-    printf("%d",*(premierjoueur));
-    printf("Le premier à jouer est %s\n",T[*(premierjoueur)].nom);
 
 
 
@@ -373,6 +393,7 @@ void MenuJoueur()
     switch(choix7)
     {
     case 1 :
+        //possibilite
         break;
     case 2 :
         break;
@@ -416,23 +437,6 @@ int inputNbJoueurs()
         break;
     }
 }
-void OrdreDePassage(int a)
- {
-     int *premierjoueur;
-     int *secondjoueur;
-     int *troisiemejoueur;
-     int *quatriemejoueur;
-     srand(time(NULL));
-     *premierjoueur=rand()%(a);
-     do { *secondjoueur=rand()%(a);} while (*secondjoueur==*premierjoueur);
-
-     if (a>2)
-        {
-            do { *troisiemejoueur=rand()%(a);} while ( (*troisiemejoueur==secondjoueur) || (*troisiemejoueur==*premierjoueur));
-            do { *quatriemejoueur=rand()%(a);} while ((*quatriemejoueur==premierjoueur) || (*quatriemejoueur==*secondjoueur) || (*quatriemejoueur==*troisiemejoueur));
-        }
-
- }
 
 
  void ReadChar(int transit)
@@ -550,6 +554,12 @@ void menup()
      choix2=MenuAide();
      Aide(choix2);
      break;
+
+    case 5 :
+        exit(1);
+        break;
+
+
 
 
     default: printf("erreur\n");}
@@ -710,7 +720,7 @@ void possibilite(t_position piioonn)
     //char plateau[19][56];
     //gotoligcol(31,0); Color(15,0);
     //printf("Ou voulez vous placer votre barriere?\n");
-    //printf("Veuillez saisir les coordonnées de la barrière\n");
+    //printf("Veuillez saisir les coordonnées de la barrière\n");kkkkkk
 
 
 int main()
@@ -741,4 +751,5 @@ int main()
 
     //Color(couleurDuTexte,couleurDeFond);
 
-    return 0;}
+    return 0;
+}

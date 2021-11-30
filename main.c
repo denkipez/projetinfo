@@ -197,14 +197,15 @@ int saisiejoueurs(int a)
     int choix6;
     char plateau[19][56];
     t_joueur T[a-1];
+    //int *premierjoueur,*secondjoueur,*troisiemejoueur,*quatriemejoueur;
+    FILE *fichierJoueur=fopen("SauvegardeJoueurs.txt","a+");
     while ( i<a)
     {
         system("cls");
         affichePlateau(plateau);
-        printf("%d",i);
         printf("Veuillez saisir le nom du joueur\n");
         scanf("%s",&(T[i].nom));
-        fprintf(fichier,"%s",T[i].nom);
+        fprintf(fichierJoueur,"%s",T[i].nom);
 
         do
         {
@@ -227,7 +228,7 @@ int saisiejoueurs(int a)
             printf("              14 : Magenta"); Color(14,0);
             printf("                15 : Jaune clair\n"); Color(15,0);
             scanf("%d",&T[i].couleur);
-            fprintf(fichier," %d",T[i].couleur);
+            fprintf(fichierJoueur," %d",T[i].couleur);
         }
         while ((T[i].couleur<1) || (T[i].couleur>15));
         do
@@ -260,88 +261,94 @@ int saisiejoueurs(int a)
         {
             case 1 :
             T[i].sigle=0x02;
-            fprintf(fichier," %d",1);
+            fprintf(fichierJoueur," %d",1);
             break;
         case 2 :
             T[i].sigle=0x03;
-            fprintf(fichier," %d",2);
+            fprintf(fichierJoueur," %d",2);
             break;
         case 3 :
              T[i].sigle=0x04;
-             fprintf(fichier," %d",3);
+             fprintf(fichierJoueur," %d",3);
              break;
         case 4 :
              T[i].sigle=0x05;
-             fprintf(fichier," %d",4);
+             fprintf(fichierJoueur," %d",4);
              break;
         case 5 :
              T[i].sigle=0x06;
-             fprintf(fichier," %d",5);
+             fprintf(fichierJoueur," %d",5);
              break;
         case 6 :
              T[i].sigle=0xFE;
-             fprintf(fichier," %d",6);
+             fprintf(fichierJoueur," %d",6);
              break;
         case 7 :
              T[i].sigle=0x10;
-             fprintf(fichier," %d",7);
+             fprintf(fichierJoueur," %d",7);
              break;
         case 8 :
              T[i].sigle=0x0E;
-             fprintf(fichier," %d",8);
+             fprintf(fichierJoueur," %d",8);
              break;
         case 9 :
              T[i].sigle=0x0F;
-             fprintf(fichier," %d",9);
+             fprintf(fichierJoueur," %d",9);
              break;
         case 10 :
              T[i].sigle=0x11;
-             fprintf(fichier," %d",10);
+             fprintf(fichierJoueur," %d",10);
              break;
         case 11 :
              T[i].sigle=0x0B;
-             fprintf(fichier," %d",11);
+             fprintf(fichierJoueur," %d",11);
              break;
         case 12 :
              T[i].sigle=0x0C;
-             fprintf(fichier," %d",12);
+             fprintf(fichierJoueur," %d",12);
              break;
         case 13 :
              T[i].sigle=0x24;
-             fprintf(fichier,"% d",13);
+             fprintf(fichierJoueur,"% d",13);
              break;
         case 14 :
              T[i].sigle=0x25;
-             fprintf(fichier,"% d",14);
+             fprintf(fichierJoueur,"% d",14);
              break;
         case 15 :
              T[i].sigle=0x40;
-             fprintf(fichier,"% d",15);
+             fprintf(fichierJoueur,"% d",15);
              break;
         case 16 :
              T[i].sigle=0x26;
-             fprintf(fichier," %d",16);
+             fprintf(fichierJoueur," %d",16);
              break;
         case 17 :
              T[i].sigle=0x23;
-             fprintf(fichier," %d",17);
+             fprintf(fichierJoueur," %d",17);
              break;
         case 18 :
              T[i].sigle=0x3F;
-             fprintf(fichier," %d",18);
+             fprintf(fichierJoueur," %d",18);
              break;
         default : printf("Erreur!\n");
 
 
         }
         T[i].score=0;
-        fprintf(fichier," %d\n",T[i].score);
+        fprintf(fichierJoueur," %d\n",T[i].score);
         printf("Profil du joueur etabli. Bonne partie !\n");
         i++;
 
 
     }
-    OrdreDePassage(a,T[a]);
+    fclose(fichierJoueur);
+    OrdreDePassage(a);
+    printf("%d",*(premierjoueur));
+    printf("Le premier à jouer est %s\n",T[*(premierjoueur)].nom);
+
+
+
 
 }
 
@@ -365,7 +372,18 @@ void MenuJoueur()
     while ((choix7>5) || (choix7<1));
     switch(choix7)
     {
-
+    case 1 :
+        break;
+    case 2 :
+        break;
+    case 3 :
+        break;
+    case 4 :
+        break;
+    case 5 :
+        break;
+    default :
+        printf("Erreur!");
     }
 }
 
@@ -400,18 +418,20 @@ int inputNbJoueurs()
 }
 void OrdreDePassage(int a)
  {
-     int premierjoueur;
-     int secondjoueur;
-     int troisiemejoueur;
-     int quatriemejoueur;
+     int *premierjoueur;
+     int *secondjoueur;
+     int *troisiemejoueur;
+     int *quatriemejoueur;
      srand(time(NULL));
-     premierjoueur=rand()%(a);
-     do { secondjoueur=rand()%(a);} while (secondjoueur==premierjoueur);
+     *premierjoueur=rand()%(a);
+     do { *secondjoueur=rand()%(a);} while (*secondjoueur==*premierjoueur);
+
      if (a>2)
         {
-            do { troisiemejoueur=rand()%(a);} while ( (troisiemejoueur==secondjoueur) || (troisiemejoueur==premierjoueur));
-            do { quatriemejoueur=rand()%(a);} while ((quatriemejoueur==premierjoueur) || (quatriemejoueur==secondjoueur) || (quatriemejoueur==troisiemejoueur));
+            do { *troisiemejoueur=rand()%(a);} while ( (*troisiemejoueur==secondjoueur) || (*troisiemejoueur==*premierjoueur));
+            do { *quatriemejoueur=rand()%(a);} while ((*quatriemejoueur==premierjoueur) || (*quatriemejoueur==*secondjoueur) || (*quatriemejoueur==*troisiemejoueur));
         }
+
  }
 
 

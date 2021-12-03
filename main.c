@@ -667,7 +667,7 @@ int I=53;
 
 }
 
-void posibilitem(t_positionm muur)
+void posibilitem(t_positionm muur,t_joueur T[0])
 {
 
     char h;
@@ -678,20 +678,20 @@ void posibilitem(t_positionm muur)
 
                         switch (h){
                         case 'D':
-                        gotoligcol(muur.x1,muur.y1+3); Color(15,0); printf("B");
-                        gotoligcol(muur.x2,muur.y2+3); Color(15,0); printf("B");
+                        gotoligcol(muur.x1,muur.y1+3); Color(T[0].couleur,0); printf("B");
+                        gotoligcol(muur.x2,muur.y2+3); Color(T[0].couleur,0); printf("B");
                         break;
                         case 'G':
-                        gotoligcol(muur.x1-3,muur.y1); Color(15,0); printf("B");
-                        gotoligcol(muur.x2-3,muur.y2); Color(15,0); printf("B");
+                        gotoligcol(muur.x1-3,muur.y1); Color(T[0].couleur,0); printf("B");
+                        gotoligcol(muur.x2-3,muur.y2); Color(T[0].couleur,0); printf("B");
                         break;
                         case 'B':
-                        gotoligcol(muur.x1+1,muur.y1); Color(15,0); printf("B");
-                        gotoligcol(muur.x2+1,muur.y2); Color(15,0); printf("B");
+                        gotoligcol(muur.x1+1,muur.y1); Color(T[0].couleur,0); printf("B");
+                        gotoligcol(muur.x2+1,muur.y2); Color(T[0].couleur,0); printf("B");
                         break;
                         case 'H':
-                        gotoligcol(muur.x1-1,muur.y1); Color(15,0); printf("B");
-                        gotoligcol(muur.x2-1,muur.y2); Color(15,0); printf("B");
+                        gotoligcol(muur.x1-1,muur.y1); Color(T[0].couleur,0); printf("B");
+                        gotoligcol(muur.x2-1,muur.y2); Color(T[0].couleur,0); printf("B");
                         break;
                         default: printf("erreur\n");
 
@@ -868,7 +868,7 @@ void partie()
         break;
       case 2:
           positionm(&mur1);
-          posibilitem(mur1);
+          posibilitem(mur1,&T[0]);
          gotoligcol(23,0); printf("                                                                          \n");
    gotoligcol(24,0); printf("                                                                           \n");
    gotoligcol(25,0); printf("                                                                           \n");
@@ -902,7 +902,8 @@ void partie()
           break;
       case 2:
           positionm(&mur2);
-          posibilitem(mur2);
+          posibilitem(mur2,&T[1
+                      ]);
           gotoligcol(23,0); printf("                                                                          \n");
    gotoligcol(24,0); printf("                                                                           \n");
    gotoligcol(25,0); printf("                                                                           \n");

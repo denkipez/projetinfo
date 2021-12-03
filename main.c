@@ -153,7 +153,7 @@ void affichePlateau(char *plateau)
                 printf("___| |___| |___| |___| |___| |___| |___| |___| |___|\n");
 
         }
-        printf("   | A | | B | | C | | D | | E | | F | | I | | J | | H | \n");
+        printf("   | A | | B | | C | | D | | E | | F | | G | | H | | I | \n");
 
 
 
@@ -184,7 +184,7 @@ int MenuAide()
 
 int nbrjoueur (int choix5)
 {
-    printf("%d",choix5);
+    //scanf("%d",&choix5);
     switch(choix5)
     {
         case 1 :
@@ -206,11 +206,11 @@ int nbrjoueur (int choix5)
     }
 }
 
-int saisiejoueurs(int a)
+void saisiejoueurs(int a, t_joueur T[a])
 {   int i=0;
     int choix6;
     char plateau[19][56];
-    t_joueur T[a-1];
+
     int *premierjoueur;
     int *secondjoueur;
     int *troisiemejoueur;
@@ -360,13 +360,8 @@ int saisiejoueurs(int a)
 
 
     }
-    printf('test');
-    OrdreDePassage(a,&premierjoueur,&secondjoueur,&troisiemejoueur,&quatriemejoueur);
-    printf("%d",(premierjoueur));
-    printf("Le premier à jouer est %s\n",T[*premierjoueur].nom);
-    printf("bateau");
-    fclose(fichierJoueur);
 
+    fclose(fichierJoueur);
 
 
 
@@ -439,8 +434,9 @@ int inputNbJoueurs()
 }
 
 
- void ReadChar(int transit)
-{       char sigle;
+char ReadChar(int transit, char sigle)
+{
+
     switch(transit)
     {
         case 1 :
@@ -517,6 +513,7 @@ int inputNbJoueurs()
              break;
         default : printf("ErreurRR!\n");
     }
+
 }
 
 
@@ -547,7 +544,8 @@ void menup()
     switch(choix)
     {
   case 1:
-    nbrjoueur(saisiejoueurs(inputNbJoueurs()));
+//    nbrjoueur(saisiejoueurs(inputNbJoueurs()));
+    partie();
     break;
 
     case 3:
@@ -567,8 +565,34 @@ void menup()
 
 }
 
+void choixpremiereposition2(t_position *caseee, t_joueur T[1])
+{
 
-void positionpion(t_position* pion)
+int A=5;
+int B=11;
+int C=17;
+int D=23;
+int E=29;
+int F=35;
+int G=41;
+int H=47;
+int I=53;
+    printf("Pour le second joueur, saisir lettre de la case ou vous voulez commencer:\n");
+    scanf("%s",&(caseee->y));
+    if (caseee->y=='A') caseee->y=A;
+    if (caseee->y=='B') caseee->y=B;
+    if (caseee->y=='C') caseee->y=C;
+    if (caseee->y=='D') caseee->y=D;
+    if (caseee->y=='E') caseee->y=E;
+    if (caseee->y=='F') caseee->y=F;
+    if (caseee->y=='G') caseee->y=G;
+    if (caseee->y=='H') caseee->y=H;
+    if (caseee->y=='I') caseee->y=I;
+    caseee->x=1;
+    gotoligcol (caseee->x,caseee->y); Color(15,0);printf("%c", T[1].sigle); gotoligcol(23,0);
+}
+
+void positionpion(t_position *pion)
 {
 
     printf("saisir ligne:\n");
@@ -649,23 +673,23 @@ void posibilitem(t_positionm muur)
     char h;
     char plateau[19][56];
     printf("de quel cote voulez vous mettre la barriere?\n");
-    printf("tappez h pour en haut g pour a gauche d pour a droite et b pour en bas:\n");
+    printf("tappez H pour en haut G pour a gauche D pour a droite et B pour en bas:\n");
     scanf("%s", &h);
 
                         switch (h){
-                        case 'd':
+                        case 'D':
                         gotoligcol(muur.x1,muur.y1+3); Color(15,0); printf("B");
                         gotoligcol(muur.x2,muur.y2+3); Color(15,0); printf("B");
                         break;
-                        case 'g':
+                        case 'G':
                         gotoligcol(muur.x1-3,muur.y1); Color(15,0); printf("B");
                         gotoligcol(muur.x2-3,muur.y2); Color(15,0); printf("B");
                         break;
-                        case 'b':
+                        case 'B':
                         gotoligcol(muur.x1+1,muur.y1); Color(15,0); printf("B");
                         gotoligcol(muur.x2+1,muur.y2); Color(15,0); printf("B");
                         break;
-                        case 'h':
+                        case 'H':
                         gotoligcol(muur.x1-1,muur.y1); Color(15,0); printf("B");
                         gotoligcol(muur.x2-1,muur.y2); Color(15,0); printf("B");
                         break;
@@ -674,53 +698,224 @@ void posibilitem(t_positionm muur)
                         }
 }
 
-void affichepion(t_position pion)
+void affichepion(t_position pion,t_joueur T[0])
 {
-    gotoligcol(pion.x,pion.y); Color(4,0); printf("#\n"); fflush(stdout);
+
+    gotoligcol(pion.x,pion.y); Color(15,0); printf("%c", T[0].sigle);
 }
 
-void possibilite(t_position piioonn)
+void possibilite(t_position piioonn,t_position *pioonn,t_joueur T[0])
 {
 
     char mouv;
     char plateau[19][56];
-    do {
-    gotoligcol(31,0); Color(15,0);
+    int i=0;
 
-    printf("ou voulez vous aller?\n");
-    printf("tappez h en haut g pour a gauche d pour a droite et b pour en bas:\n");
+
+
+    gotoligcol(21,0); Color(15,0);
+    printf("tappez H pour en haut G pour a gauche D pour a droite et B pour en bas:\n");
     scanf("%s", &mouv);
-
                         switch (mouv){
-                        case 'd':
-                        gotoligcol (piioonn.x,piioonn.y); Color(15,0);printf("_");
+                        case 'D':
+                        gotoligcol(piioonn.x,piioonn.y); Color(15,0);printf("_");
                         piioonn.y=piioonn.y+6;
+                        affichepion(piioonn,&T[0]);
+                        pioonn->x=pioonn->x;
+                        pioonn->y=pioonn->y+6;
+
                         break;
-                        case 'g':
-                        gotoligcol (piioonn.x,piioonn.y); Color(15,0);printf("_");
+                        case 'G':
+                        gotoligcol(piioonn.x,piioonn.y); Color(15,0);printf("_");
                         piioonn.y=piioonn.y-6;
+                        affichepion(piioonn,&T[0]);
+                        pioonn->x=pioonn->x;
+                        pioonn->y=pioonn->y-6;
                         break;
-                        case 'b':
-                        gotoligcol (piioonn.x,piioonn.y); Color(15,0);printf("_");
+                        case 'B':
+                        gotoligcol(piioonn.x,piioonn.y); Color(15,0);printf("_");
                         piioonn.x=piioonn.x+2;
+                        affichepion(piioonn,&T[0]);
+                        pioonn->x=pioonn->x+2;
+                        pioonn->y=pioonn->y;
                         break;
-                        case 'h':
-                        gotoligcol (piioonn.x,piioonn.y); Color(15,0);printf("_");
+                        case 'H':
+                        gotoligcol(piioonn.x,piioonn.y); Color(15,0);printf("_");
                         piioonn.x=piioonn.x-2;
+                        affichepion(piioonn,&T[0]);
+                        pioonn->x=pioonn->x-2;
+                        pioonn->y=pioonn->y;
                         break;
                         default: printf("erreur\n");
                         }
-                        affichepion(piioonn); }
-                        while (piioonn.x!=19 || piioonn.y!=53);
+
+
+
+}
+void possibiliteee(t_position casee)
+{
+
+    gotoligcol(casee.x,casee.y); Color(15,0);printf("#");
 
 }
 
-//void barriere(t_joueur)
-    //char barr;
-    //char plateau[19][56];
-    //gotoligcol(31,0); Color(15,0);
-    //printf("Ou voulez vous placer votre barriere?\n");
-    //printf("Veuillez saisir les coordonnées de la barrière\n");kkkkkk
+void choixpremiereposition1(t_position *casee, t_joueur T[0])
+{
+
+
+int A=5;
+int B=11;
+int C=17;
+int D=23;
+int E=29;
+int F=35;
+int G=41;
+int H=47;
+int I=53;
+
+
+
+    printf("Pour le premier joueur, saisir lettre de la case ou vous voulez commencer:\n");
+    scanf("%s",&(casee->y));
+    if (casee->y=='A') casee->y=A;
+    if (casee->y=='B') casee->y=B;
+    if (casee->y=='C') casee->y=C;
+    if (casee->y=='D') casee->y=D;
+    if (casee->y=='E') casee->y=E;
+    if (casee->y=='F') casee->y=F;
+    if (casee->y=='G') casee->y=G;
+    if (casee->y=='H') casee->y=H;
+    if (casee->y=='I') casee->y=I;
+    casee->x=17;
+    gotoligcol (casee->x,casee->y); Color(15,0); printf("%c", T[0].sigle); gotoligcol(21,0);
+
+
+
+/*    if (cpt==3) {
+    casee->y1=H;
+
+    printf("Pour le troisieme, saisir numero de la case ou vous voulez commencer:\n");
+    scanf("%d",&(casee->x1));
+    if (casee->x1==6) casee->x1=11;
+    if (casee->x1==7) casee->x1=13;
+    if (casee->x1==8) casee->x1=15;
+    if (casee->x1==9) casee->x1=17;
+    if (casee->x1==5) casee->x1=9;
+    if (casee->x1==3) casee->x1=5;
+    if (casee->x1==2) casee->x1=3;
+    if (casee->x1==4) casee->x1=7;
+
+
+    }
+
+    if (cpt==4) {
+    casee->y1=A;
+
+    printf("Pour le quatrieme joueur, saisir numero de la case ou vous voulez commencer:\n");
+    scanf("%d",&(casee->x1));
+    if (casee->x1==6) casee->x1=11;
+    if (casee->x1==7) casee->x1=13;
+    if (casee->x1==8) casee->x1=15;
+    if (casee->x1==9) casee->x1=17;
+    if (casee->x1==5) casee->x1=9;
+    if (casee->x1==3) casee->x1=5;
+    if (casee->x1==2) casee->x1=3;
+    if (casee->x1==4) casee->x1=7;
+*/
+
+
+}
+
+
+void partie()
+{
+
+    t_joueur T[0];
+
+    saisiejoueurs(2,&T[0]);
+    t_position casee1;
+    t_position casee2;
+    t_position piioonn;
+
+    choixpremiereposition1(&casee1,&T[0]);
+    choixpremiereposition2(&casee2,&T[0]);
+
+    int c,d;
+    t_positionm mur1;
+    t_positionm mur2;
+
+   for (int i=1; i<10; i++) {
+     if (i%2!=0) {
+   gotoligcol(19,0); printf("                                                                                                \n");
+   gotoligcol(20,0); printf("                                                                           \n");
+   gotoligcol(21,0); printf("                                                                           \n");
+   gotoligcol(22,0); printf("                                                                            \n");
+   gotoligcol(23,0); printf("                                                                          \n");
+   gotoligcol(24,0); printf("                                                                           \n");
+   gotoligcol(25,0); printf("                                                                           \n");
+   gotoligcol(26,0); printf("                                                                            \n");
+   gotoligcol(27,0); printf("                                                                           \n");
+   gotoligcol(29,0); printf("                                                                            \n");
+   gotoligcol(28,0); printf("                                                                           \n");
+   gotoligcol(19,0); printf("JOUEUR n1 : tapper 1 pour bouger votre pion ou 2 pour placer un mur\n");
+    scanf("%d",&c);
+    switch(c) {
+
+      case 1 :
+
+        possibilite(casee1,&casee1,&T[0]);
+
+        break;
+      case 2:
+          positionm(&mur1);
+          posibilitem(mur1);
+         gotoligcol(23,0); printf("                                                                          \n");
+   gotoligcol(24,0); printf("                                                                           \n");
+   gotoligcol(25,0); printf("                                                                           \n");
+   gotoligcol(26,0); printf("                                                                            \n");
+   gotoligcol(27,0); printf("                                                                           \n");
+   gotoligcol(28,0); printf("                                                                           \n");
+   gotoligcol(29,0); printf("                                                                            \n");
+    gotoligcol(30,0); printf("                                                                           \n");
+   gotoligcol(31,0); printf("                                                                            \n");
+         break;
+     default : printf("erreur"); } }
+
+   if (i%2==0) {
+   gotoligcol(19,0); printf("                                                                                             \n");
+   gotoligcol(20,0); printf("                                                                           \n");
+   gotoligcol(21,0); printf("                                                                           \n");
+   gotoligcol(22,0); printf("                                                                            \n");
+   gotoligcol(23,0); printf("                                                                          \n");
+   gotoligcol(24,0); printf("                                                                           \n");
+   gotoligcol(25,0); printf("                                                                           \n");
+   gotoligcol(26,0); printf("                                                                            \n");
+   gotoligcol(27,0); printf("                                                                           \n");
+   gotoligcol(28,0); printf("                                                                           \n");
+   gotoligcol(29,0); printf("                                                                            \n");
+    gotoligcol(19,0); printf("JOUEUR n2 : tapper 1 pour bouger votre pion ou 2 pour placer un mur\n");
+    scanf("%d",&d);
+    switch(d) {
+
+      case 1 :
+          possibilite(casee2,&casee2, &T[1]);
+          break;
+      case 2:
+          positionm(&mur2);
+          posibilitem(mur2);
+          gotoligcol(23,0); printf("                                                                          \n");
+   gotoligcol(24,0); printf("                                                                           \n");
+   gotoligcol(25,0); printf("                                                                           \n");
+   gotoligcol(26,0); printf("                                                                            \n");
+   gotoligcol(27,0); printf("                                                                           \n");
+   gotoligcol(28,0); printf("                                                                           \n");
+   gotoligcol(29,0); printf("                                                                            \n");
+    gotoligcol(30,0); printf("                                                                           \n");
+   gotoligcol(31,0); printf("                                                                            \n");
+          break;
+      default : printf("erreur");
+
+} } } }
 
 
 int main()
@@ -738,18 +933,13 @@ int main()
     t_position pion2;
     t_joueur premier;
     t_joueur second;
-    choix=menu();
-    menup();
-    /*t_positionm mur;
-    positionm(&mur);
-    posibilitem(mur);*/
-
-    //positionpion(&pion2);
-    //afficher(pion2);
+    //choix=menu();
+    //menup();
 
 
+    partie();
 
-    //Color(couleurDuTexte,couleurDeFond);
+
 
     return 0;
 }

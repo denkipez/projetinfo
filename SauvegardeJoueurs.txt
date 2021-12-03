@@ -34,3 +34,11 @@ JJJJ 1 4 0
 TTTTTTTTTTT 9 9 0
 oo 1 1 0
 pp 2 2 0
+fofo 1 1 0
+DD 1 2 0
+ss 1 1 0
+ZZZ 1 2 0
+ZZ 1 1 0
+ZZ 1 1 0
+GARY 1 4 0
+RRR 1 12 0

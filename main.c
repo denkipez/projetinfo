@@ -229,21 +229,21 @@ void saisiejoueurs(int a, t_joueur T[a])
             system("cls");
             affichePlateau(plateau);
             printf("Veuillez saisir un nombre compris entre 1 et 15 pour choisir votre couleur votre couleur:\n");
-            printf("1 : gris clair"); Color(1,0);
-            printf("               2 : Bleu fluo");Color(2,0);
-            printf("               3 : Vert fonce\n"); Color(3,0);
-            printf("4 : Bleu clair"); Color(4,0);
-            printf("               5 : Rouge fonce");Color(5,0);
-            printf("             6 : Violet\n"); Color(6,0);
-            printf("7 : Jaune"); Color(7,0);
-            printf("                    8 : Blanc"); Color(8,0);
-            printf("                   9 : gris fonce\n"); Color(9,0);
-            printf("10 : Bleu fonce"); Color(10,0);
-            printf("              11 : Vert"); Color(11,0);
-            printf("                   12 : turquoise\n"); Color(12,0);
-            printf("13 : Rouge fluo"); Color(13,0);
-            printf("              14 : Magenta"); Color(14,0);
-            printf("                15 : Jaune clair\n"); Color(15,0);
+            printf("0 : gris clair"); Color(1,0);
+            printf("               1 : Bleu fluo");Color(2,0);
+            printf("               2 : Vert fonce\n"); Color(3,0);
+            printf("3 : Bleu clair"); Color(4,0);
+            printf("               4 : Rouge fonce");Color(5,0);
+            printf("             5 : Violet\n"); Color(6,0);
+            printf("6 : Jaune"); Color(7,0);
+            printf("                    7 : Blanc"); Color(8,0);
+            printf("                   8 : gris fonce\n"); Color(9,0);
+            printf("9 : Bleu fonce"); Color(10,0);
+            printf("              10 : Vert"); Color(11,0);
+            printf("                   11 : turquoise\n"); Color(12,0);
+            printf("12 : Rouge fluo"); Color(13,0);
+            printf("              13 : Magenta"); Color(14,0);
+            printf("                14 : Jaune clair\n"); Color(15,0);
             scanf("%d",&T[i].couleur);
             fprintf(fichierJoueur," %d",T[i].couleur);
         }
@@ -577,7 +577,7 @@ int F=35;
 int G=41;
 int H=47;
 int I=53;
-    printf("Pour le second joueur, saisir lettre de la case ou vous voulez commencer:\n");
+    Color(15,0);printf("Pour le second joueur, saisir lettre de la case ou vous voulez commencer:\n");
     scanf("%s",&(caseee->y));
     if (caseee->y=='A') caseee->y=A;
     if (caseee->y=='B') caseee->y=B;
@@ -589,7 +589,7 @@ int I=53;
     if (caseee->y=='H') caseee->y=H;
     if (caseee->y=='I') caseee->y=I;
     caseee->x=1;
-    gotoligcol (caseee->x,caseee->y); Color(15,0);printf("%c", T[1].sigle); gotoligcol(23,0);
+    gotoligcol (caseee->x,caseee->y); Color(T[1].couleur,0);printf("%c", T[1].sigle); gotoligcol(23,0);
 }
 
 void positionpion(t_position *pion)
@@ -701,7 +701,7 @@ void posibilitem(t_positionm muur)
 void affichepion(t_position pion,t_joueur T[0])
 {
 
-    gotoligcol(pion.x,pion.y); Color(15,0); printf("%c", T[0].sigle);
+    gotoligcol(pion.x,pion.y); Color(T[0].couleur,0); printf("%c", T[0].sigle);
 }
 
 void possibilite(t_position piioonn,t_position *pioonn,t_joueur T[0])
@@ -775,7 +775,7 @@ int I=53;
 
 
 
-    printf("Pour le premier joueur, saisir lettre de la case ou vous voulez commencer:\n");
+    Color(15,0); printf("Pour le premier joueur, saisir lettre de la case ou vous voulez commencer:\n");
     scanf("%s",&(casee->y));
     if (casee->y=='A') casee->y=A;
     if (casee->y=='B') casee->y=B;
@@ -787,7 +787,7 @@ int I=53;
     if (casee->y=='H') casee->y=H;
     if (casee->y=='I') casee->y=I;
     casee->x=17;
-    gotoligcol (casee->x,casee->y); Color(15,0); printf("%c", T[0].sigle); gotoligcol(21,0);
+    gotoligcol (casee->x,casee->y); Color(T[0].couleur,0); printf("%c", T[0].sigle); gotoligcol(21,0);
 
 
 
@@ -857,7 +857,7 @@ void partie()
    gotoligcol(27,0); printf("                                                                           \n");
    gotoligcol(29,0); printf("                                                                            \n");
    gotoligcol(28,0); printf("                                                                           \n");
-   gotoligcol(19,0); printf("JOUEUR n1 : tapper 1 pour bouger votre pion ou 2 pour placer un mur\n");
+   gotoligcol(19,0); Color(15,0); printf("JOUEUR n1 : tapper 1 pour bouger votre pion ou 2 pour placer un mur\n");
     scanf("%d",&c);
     switch(c) {
 
@@ -893,7 +893,7 @@ void partie()
    gotoligcol(27,0); printf("                                                                           \n");
    gotoligcol(28,0); printf("                                                                           \n");
    gotoligcol(29,0); printf("                                                                            \n");
-    gotoligcol(19,0); printf("JOUEUR n2 : tapper 1 pour bouger votre pion ou 2 pour placer un mur\n");
+   gotoligcol(19,0); Color(15,0); printf("JOUEUR n2 : tapper 1 pour bouger votre pion ou 2 pour placer un mur\n");
     scanf("%d",&d);
     switch(d) {
 

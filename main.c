@@ -902,8 +902,7 @@ void partie()
           break;
       case 2:
           positionm(&mur2);
-          posibilitem(mur2,&T[1
-                      ]);
+          posibilitem(mur2,&T[1]);
           gotoligcol(23,0); printf("                                                                          \n");
    gotoligcol(24,0); printf("                                                                           \n");
    gotoligcol(25,0); printf("                                                                           \n");

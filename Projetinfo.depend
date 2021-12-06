@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1638313872 source:c:\users\naiss\desktop\ing3\algo\td exos\projet info\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<string.h>
+	<time.h>
+

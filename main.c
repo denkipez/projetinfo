@@ -4,33 +4,7 @@
 #include <string.h>
 #include <time.h>
 
-int RETOUR()
-{
-    int choix3;
-do {
-
-    printf("Appuyez sur 0 pour retourner au menu aide.\n");
-    scanf("%d",&choix3);}
-    while (choix3!=0);
-    return(choix3);}
-
-
-
-
-void gotoligcol( int lig, int col )
-{
-COORD mycoord;
-
-mycoord.X = col;
-mycoord.Y = lig;
-SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mycoord );
-}
-void Color(int couleurDuTexte,int couleurDeFond)
-{
-    HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(H,couleurDeFond*16+couleurDuTexte);
-
-}
+/*------------------------------------------------------------------S T R U C T U R E S--------------------------------------------------------------------------------------------------------------------------------*/
 
 typedef struct plateau
 {
@@ -56,30 +30,35 @@ typedef struct joueur
 
 }t_joueur;
 
-void infonewpartie(t_joueur* premier, t_joueur* second)
+typedef struct positionm
 {
-    printf("saisir nom du premier joueur:\n");
-    scanf("%s",premier->nom);
-    printf("saisir nom du second joueur:\n");
-    scanf("%s", second->nom);
-    printf("chosir couleur du premier joueur:\n");
-    scanf("%d",&(premier->couleur));
-    printf("saisir couleur du second joueur:\n");
-    scanf("%d",&(second->couleur));
+    int x1, x2;
+    char y1;
+    char y2;
+
+}t_positionm;
+
+/*--------------------------------------------------------------F I N   S T R U C T U R E S--------------------------------------------------------------------------------------------------------------------------------*/
+
+
+
+
+
+void gotoligcol( int lig, int col )
+{
+COORD mycoord;
+
+mycoord.X = col;
+mycoord.Y = lig;
+SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mycoord );
+}
+void Color(int couleurDuTexte,int couleurDeFond)
+{
+    HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(H,couleurDeFond*16+couleurDuTexte);
 
 }
 
-void OrdreDePassage(int a, int *premierjoueur, int *secondjoueur, int *troisiemejoueur, int *quatriemejoueur)
-{
-
-
-     srand(time(NULL));
-     *premierjoueur=rand()%(a);
-     do { *secondjoueur=rand()%(a);} while (*secondjoueur==*premierjoueur);
-     if (a>2)
-        {
-            do { *troisiemejoueur=rand()%(a);} while ( (*troisiemejoueur==*secondjoueur) || (*troisiemejoueur==*premierjoueur));
-            do { *quatriemejoueur=rand()%(a);} while ((*quatriemejoueur==*premierjoueur) || (*quatriemejoueur==*secondjoueur) || (*quatriemejoueur==*troisiemejoueur)); }}
 
 
 
@@ -132,11 +111,22 @@ void OrdreDePassage(int a, int *premierjoueur, int *secondjoueur, int *troisieme
             menup(menu());
             break;
 
-        default : printf("Erreur!");
+        default :
+            printf("Erreur!");
+            break;
 
 
     }
  }
+int RETOUR()
+{
+    int choix3;
+do {
+
+    printf("Appuyez sur 0 pour retourner au menu aide.\n");
+    scanf("%d",&choix3);}
+    while (choix3!=0);
+    return(choix3);}
 
 
 void affichePlateau(char *plateau)
@@ -182,72 +172,45 @@ int MenuAide()
 
 
 
-int nbrjoueur (int choix5)
-{
-    //scanf("%d",&choix5);
-    switch(choix5)
-    {
-        case 1 :
 
-            return choix5;
-            break;
-
-        case 2 :
-            return choix5;
-            break;
-        case 3 :
-            menu();
-            menup();
-            break;
-
-        default : printf("Erreur!");
-
-
-    }
-}
-
-void saisiejoueurs(int a, t_joueur T[a])
+int saisiejoueurs(int a,t_joueur *TableauJoueurs,t_positionm *TableauPositionMur)
 {   int i=0;
     int choix6;
     char plateau[19][56];
-
-    int *premierjoueur;
-    int *secondjoueur;
-    int *troisiemejoueur;
-    int *quatriemejoueur;
+    TableauJoueurs=malloc(a*sizeof(t_joueur));
     FILE *fichierJoueur=fopen("SauvegardeJoueurs.txt","a+");
     while (i<a)
     {
         system("cls");
         affichePlateau(plateau);
         printf("Veuillez saisir le nom du joueur\n");
-        scanf("%s",&(T[i].nom));
-        fprintf(fichierJoueur,"%s",T[i].nom);
+        scanf("%s",&(TableauJoueurs[i].nom));
+        fprintf(fichierJoueur,"%s",TableauJoueurs[i].nom);
 
         do
         {
             system("cls");
             affichePlateau(plateau);
             printf("Veuillez saisir un nombre compris entre 1 et 15 pour choisir votre couleur votre couleur:\n");
-            printf("0 : gris clair"); Color(1,0);
-            printf("               1 : Bleu fluo");Color(2,0);
-            printf("               2 : Vert fonce\n"); Color(3,0);
-            printf("3 : Bleu clair"); Color(4,0);
-            printf("               4 : Rouge fonce");Color(5,0);
-            printf("             5 : Violet\n"); Color(6,0);
-            printf("6 : Jaune"); Color(7,0);
-            printf("                    7 : Blanc"); Color(8,0);
-            printf("                   8 : gris fonce\n"); Color(9,0);
-            printf("9 : Bleu fonce"); Color(10,0);
-            printf("              10 : Vert"); Color(11,0);
-            printf("                   11 : turquoise\n"); Color(12,0);
-            printf("12 : Rouge fluo"); Color(13,0);
-            printf("              13 : Magenta"); Color(14,0);
-            printf("                14 : Jaune clair\n"); Color(15,0);
-            scanf("%d",&T[i].couleur);
-            fprintf(fichierJoueur," %d",T[i].couleur);
+            printf("1 : gris clair"); Color(1,0);
+            printf("               2 : Bleu fluo");Color(2,0);
+            printf("               3 : Vert fonce\n"); Color(3,0);
+            printf("4 : Bleu clair"); Color(4,0);
+            printf("                5 : Rouge fonce");Color(5,0);
+            printf("             6 : Violet\n"); Color(6,0);
+            printf("7 : Jaune"); Color(7,0);
+            printf("                    8 : Blanc"); Color(8,0);
+            printf("                   9 : gris fonce\n"); Color(9,0);
+            printf("10 : Bleu fonce"); Color(10,0);
+            printf("              11 : Vert"); Color(11,0);
+            printf("                   12 : turquoise\n"); Color(12,0);
+            printf("13 : Rouge fluo"); Color(13,0);
+            printf("              14 : Magenta"); Color(14,0);
+            printf("                15 : Jaune clair\n"); Color(15,0);
+            scanf("%d",&TableauJoueurs[i].couleur);
+            fprintf(fichierJoueur," %d",TableauJoueurs[i].couleur);
         }
-        while ((T[i].couleur<1) || (T[i].couleur>15));
+        while ((TableauJoueurs[i].couleur<1) || (TableauJoueurs[i].couleur>15));
         do
         {
             system("cls");
@@ -277,98 +240,115 @@ void saisiejoueurs(int a, t_joueur T[a])
         switch(choix6)
         {
             case 1 :
-            T[i].sigle=0x02;
+            TableauJoueurs[i].sigle=0x02;
             fprintf(fichierJoueur," %d",1);
             break;
         case 2 :
-            T[i].sigle=0x03;
+            TableauJoueurs[i].sigle=0x03;
             fprintf(fichierJoueur," %d",2);
             break;
         case 3 :
-             T[i].sigle=0x04;
+             TableauJoueurs[i].sigle=0x04;
              fprintf(fichierJoueur," %d",3);
              break;
         case 4 :
-             T[i].sigle=0x05;
+             TableauJoueurs[i].sigle=0x05;
              fprintf(fichierJoueur," %d",4);
              break;
         case 5 :
-             T[i].sigle=0x06;
+             TableauJoueurs[i].sigle=0x06;
              fprintf(fichierJoueur," %d",5);
              break;
         case 6 :
-             T[i].sigle=0xFE;
+             TableauJoueurs[i].sigle=0xFE;
              fprintf(fichierJoueur," %d",6);
              break;
         case 7 :
-             T[i].sigle=0x10;
+             TableauJoueurs[i].sigle=0x10;
              fprintf(fichierJoueur," %d",7);
              break;
         case 8 :
-             T[i].sigle=0x0E;
+             TableauJoueurs[i].sigle=0x0E;
              fprintf(fichierJoueur," %d",8);
              break;
         case 9 :
-             T[i].sigle=0x0F;
+             TableauJoueurs[i].sigle=0x0F;
              fprintf(fichierJoueur," %d",9);
              break;
         case 10 :
-             T[i].sigle=0x11;
+             TableauJoueurs[i].sigle=0x11;
              fprintf(fichierJoueur," %d",10);
              break;
         case 11 :
-             T[i].sigle=0x0B;
+             TableauJoueurs[i].sigle=0x0B;
              fprintf(fichierJoueur," %d",11);
              break;
         case 12 :
-             T[i].sigle=0x0C;
+             TableauJoueurs[i].sigle=0x0C;
              fprintf(fichierJoueur," %d",12);
              break;
         case 13 :
-             T[i].sigle=0x24;
+             TableauJoueurs[i].sigle=0x24;
              fprintf(fichierJoueur,"% d",13);
              break;
         case 14 :
-             T[i].sigle=0x25;
+             TableauJoueurs[i].sigle=0x25;
              fprintf(fichierJoueur,"% d",14);
              break;
         case 15 :
-             T[i].sigle=0x40;
+             TableauJoueurs[i].sigle=0x40;
              fprintf(fichierJoueur,"% d",15);
              break;
         case 16 :
-             T[i].sigle=0x26;
+             TableauJoueurs[i].sigle=0x26;
              fprintf(fichierJoueur," %d",16);
              break;
         case 17 :
-             T[i].sigle=0x23;
+             TableauJoueurs[i].sigle=0x23;
              fprintf(fichierJoueur," %d",17);
              break;
         case 18 :
-             T[i].sigle=0x3F;
+             TableauJoueurs[i].sigle=0x3F;
              fprintf(fichierJoueur," %d",18);
              break;
-        default : printf("Erreur!\n");
+        default :
+            printf("Erreur\n");
+            break;
 
 
         }
-        T[i].score=0;
-        fprintf(fichierJoueur," %d\n",T[i].score);
+        TableauJoueurs[i].score=0;
+        fprintf(fichierJoueur," %d\n",TableauJoueurs[i].score);
         printf("Profil du joueur etabli. Bonne partie !\n");
         i++;
 
 
 
     }
-
     fclose(fichierJoueur);
+    int firstp,secondp,thirdp,fourthp;
+    srand(time(NULL));
+    firstp=rand()%(a);
+    do { secondp=rand()%(a);} while (secondp==firstp);
+    if (a>2)
+        {
+            do { thirdp=rand()%(a);} while ( (thirdp==secondp) || (thirdp==firstp));
+            do { fourthp=rand()%(a);} while ((fourthp==firstp) || (fourthp==secondp) || (fourthp==thirdp)); }
+
+    printf("Le premier joueur est : %s\n",TableauJoueurs[firstp].nom);
+    int compteur=0;
+    int compteurmur;
+
+    Partie(a,firstp,secondp,thirdp,fourthp,TableauJoueurs,compteur,TableauPositionMur,compteurmur);
+
+
 
 
 
 }
 
 
-void MenuJoueur()
+void MenuJoueur(int numerojoueur, t_joueur *TableauJoueurs)
 {   int choix7;
     system("cls");
     char plateau[19][56];
@@ -381,6 +361,7 @@ void MenuJoueur()
         printf("3. Passer son tour");
         printf("4. Annuler l'action précédente");
         printf("5. Interrompre la partie");
+        printf("%s, veuillez faire un choix", TableauJoueurs[numerojoueur].nom);
         scanf("%d",choix7);
 
     }
@@ -400,6 +381,7 @@ void MenuJoueur()
         break;
     default :
         printf("Erreur!");
+        break;
     }
 }
 
@@ -427,6 +409,7 @@ int inputNbJoueurs()
     case 3 :
         menup(menu());
         break;
+        return 0;
     default :
         printf("Error \n");
         break;
@@ -434,7 +417,7 @@ int inputNbJoueurs()
 }
 
 
-char ReadChar(int transit, char sigle)
+char ReadChar(int transit, char sigle) // SS Prog qui permets de récupérer le charactère hexadecimal associé au joueur car les caractères choisis sont des indicateur de début de texte ou autre
 {
 
     switch(transit)
@@ -511,7 +494,9 @@ char ReadChar(int transit, char sigle)
             sigle=0x3F;
             printf("%c\n",sigle);
              break;
-        default : printf("ErreurRR!\n");
+        default :
+            printf("ErreurRR!\n");
+            break;
     }
 
 }
@@ -537,15 +522,16 @@ int menu()
 }
 
 void menup()
-{
+{   t_joueur *TableauJoueurs;
+    t_positionm *TableauPositionMur;
     int choix;
     int pion1;
     int choix2;
     switch(choix)
     {
   case 1:
-//    nbrjoueur(saisiejoueurs(inputNbJoueurs()));
-    partie();
+    saisiejoueurs(inputNbJoueurs(),TableauJoueurs,TableauPositionMur);
+    //partie();
     break;
 
     case 3:
@@ -560,54 +546,14 @@ void menup()
 
 
 
-    default: printf("erreur\n");}
+    default:
+        printf("\nerreur\n");
+        break;
+    }
 
 
 }
 
-void choixpremiereposition2(t_position *caseee, t_joueur T[1])
-{
-
-int A=5;
-int B=11;
-int C=17;
-int D=23;
-int E=29;
-int F=35;
-int G=41;
-int H=47;
-int I=53;
-    Color(15,0);printf("Pour le second joueur, saisir lettre de la case ou vous voulez commencer:\n");
-    scanf("%s",&(caseee->y));
-    if (caseee->y=='A') caseee->y=A;
-    if (caseee->y=='B') caseee->y=B;
-    if (caseee->y=='C') caseee->y=C;
-    if (caseee->y=='D') caseee->y=D;
-    if (caseee->y=='E') caseee->y=E;
-    if (caseee->y=='F') caseee->y=F;
-    if (caseee->y=='G') caseee->y=G;
-    if (caseee->y=='H') caseee->y=H;
-    if (caseee->y=='I') caseee->y=I;
-    caseee->x=1;
-    gotoligcol (caseee->x,caseee->y); Color(T[1].couleur,0);printf("%c", T[1].sigle); gotoligcol(23,0);
-}
-
-void positionpion(t_position *pion)
-{
-
-    printf("saisir ligne:\n");
-    scanf("%d",&(pion->x));
-    printf("saisir colonne:\n");
-    scanf("%d",&(pion->y));
-}
-
-typedef struct positionm
-{
-    int x1, x2;
-    char y1;
-    char y2;
-
-}t_positionm;
 
 void positionm(t_positionm *mur)
 {
@@ -667,7 +613,7 @@ int I=53;
 
 }
 
-void posibilitem(t_positionm muur,t_joueur T[0])
+void posibilitem(t_positionm muur,t_joueur T[0],t_positionm *TableauPositionMur[19], int compteurm)
 {
 
     char h;
@@ -678,22 +624,41 @@ void posibilitem(t_positionm muur,t_joueur T[0])
 
                         switch (h){
                         case 'D':
-                        gotoligcol(muur.x1,muur.y1+3); Color(T[0].couleur,0); printf("B");
-                        gotoligcol(muur.x2,muur.y2+3); Color(T[0].couleur,0); printf("B");
+                        gotoligcol(muur.x1,muur.y1+3); Color(T[0].couleur,0); printf("%c",0xDB);
+                        gotoligcol(muur.x2,muur.y2+3); Color(T[0].couleur,0); printf("%c",0xDB);
+                        TableauPositionMur[compteurm].x1=muur.x1;
+                        TableauPositionMur[compteurm].x2=muur.x2;
+                        TableauPositionMur[compteurm].y2=muur.y2+3;
+                        TableauPositionMur[compteurm].y1=muur.y1+3;
+
                         break;
                         case 'G':
-                        gotoligcol(muur.x1-3,muur.y1); Color(T[0].couleur,0); printf("B");
-                        gotoligcol(muur.x2-3,muur.y2); Color(T[0].couleur,0); printf("B");
+                        gotoligcol(muur.x1-3,muur.y1); Color(T[0].couleur,0); printf("%c",0xDB);
+                        gotoligcol(muur.x2-3,muur.y2); Color(T[0].couleur,0); printf("%c",0xDB);
+                        TableauPositionMur[compteurm].x1=muur.x1-3;
+                        TableauPositionMur[compteurm].x2=muur.x2-3;
+                        TableauPositionMur[compteurm].y2=muur.y2;
+                        TableauPositionMur[compteurm].y1=muur.y1;
                         break;
                         case 'B':
-                        gotoligcol(muur.x1+1,muur.y1); Color(T[0].couleur,0); printf("B");
-                        gotoligcol(muur.x2+1,muur.y2); Color(T[0].couleur,0); printf("B");
+                        gotoligcol(muur.x1+1,muur.y1); Color(T[0].couleur,0); printf("%c",0xDB);
+                        gotoligcol(muur.x2+1,muur.y2); Color(T[0].couleur,0); printf("%c",0xDB);
+                        TableauPositionMur[compteurm].x1=muur.x1+1;
+                        TableauPositionMur[compteurm].x2=muur.x2+1;
+                        TableauPositionMur[compteurm].y2=muur.y2;
+                        TableauPositionMur[compteurm].y1=muur.y1;
                         break;
                         case 'H':
-                        gotoligcol(muur.x1-1,muur.y1); Color(T[0].couleur,0); printf("B");
-                        gotoligcol(muur.x2-1,muur.y2); Color(T[0].couleur,0); printf("B");
+                        gotoligcol(muur.x1-1,muur.y1); Color(T[0].couleur,0); printf("%c",0xDB);
+                        gotoligcol(muur.x2-1,muur.y2); Color(T[0].couleur,0); printf("%c",0xDB);
+                        TableauPositionMur[compteurm].x1=muur.x1-1;
+                        TableauPositionMur[compteurm].x2=muur.x2-1;
+                        TableauPositionMur[compteurm].y2=muur.y2;
+                        TableauPositionMur[compteurm].y1=muur.y1;
                         break;
-                        default: printf("erreur\n");
+                        default:
+                            printf("erreur\n");
+                            break;
 
                         }
 }
@@ -704,7 +669,7 @@ void affichepion(t_position pion,t_joueur T[0])
     gotoligcol(pion.x,pion.y); Color(T[0].couleur,0); printf("%c", T[0].sigle);
 }
 
-void possibilite(t_position piioonn,t_position *pioonn,t_joueur T[0])
+void possibilite(t_position piioonn,t_position *pioonn,t_joueur TableauJoueurs,t_positionm *TableauPositionMur,int compteurmur)
 {
 
     char mouv;
@@ -718,29 +683,34 @@ void possibilite(t_position piioonn,t_position *pioonn,t_joueur T[0])
     scanf("%s", &mouv);
                         switch (mouv){
                         case 'D':
-                        gotoligcol(piioonn.x,piioonn.y); Color(15,0);printf("_");
+                        gotoligcol(piioonn.x,piioonn.y); Color(T[0].couleur,0);printf("%c",T[0].sigle);
                         piioonn.y=piioonn.y+6;
                         affichepion(piioonn,&T[0]);
+                        for (int i=0,i<compteurmur,i++)
+                        {
+                            if ((TableauPositionMur[i].x1)
+                        }
                         pioonn->x=pioonn->x;
                         pioonn->y=pioonn->y+6;
 
                         break;
                         case 'G':
-                        gotoligcol(piioonn.x,piioonn.y); Color(15,0);printf("_");
+                        gotoligcol(piioonn.x,piioonn.y); Color(T[0].couleur,0);printf("%c",
+                                                                                      T[0].sigle);
                         piioonn.y=piioonn.y-6;
                         affichepion(piioonn,&T[0]);
                         pioonn->x=pioonn->x;
                         pioonn->y=pioonn->y-6;
                         break;
                         case 'B':
-                        gotoligcol(piioonn.x,piioonn.y); Color(15,0);printf("_");
+                        gotoligcol(piioonn.x,piioonn.y); Color(T[0].couleur,0);printf("%c",T[0].sigle);
                         piioonn.x=piioonn.x+2;
                         affichepion(piioonn,&T[0]);
                         pioonn->x=pioonn->x+2;
                         pioonn->y=pioonn->y;
                         break;
                         case 'H':
-                        gotoligcol(piioonn.x,piioonn.y); Color(15,0);printf("_");
+                        gotoligcol(piioonn.x,piioonn.y); Color(T[0].couleur,0);printf("%c",T[0].sigle);
                         piioonn.x=piioonn.x-2;
                         affichepion(piioonn,&T[0]);
                         pioonn->x=pioonn->x-2;
@@ -759,10 +729,11 @@ void possibiliteee(t_position casee)
 
 }
 
-void choixpremiereposition1(t_position *casee, t_joueur T[0])
+
+void choixpremiereposition1(int a, int cptj,int premierjoueur, int deuxiemejoueur, int troisiemejoueur, int quatriemejoueur ,t_joueur *TableauJoueurs)
 {
 
-
+char plateau[19][56];
 int A=5;
 int B=11;
 int C=17;
@@ -774,60 +745,125 @@ int H=47;
 int I=53;
 
 
+    if (cptj==1)
+   {
+    system("cls");
+    affichePlateau(plateau);
+    Color(15,0); printf("%s,vous etes le premier joueur. Veuillez saisir lettre de la case ou vous souhaitez demarrer la partie :\n",TableauJoueurs[premierjoueur].nom);
+    scanf("%s",&(TableauJoueurs[premierjoueur].emplacement.y));
+    if (TableauJoueurs[premierjoueur].emplacement.y=='A') TableauJoueurs[premierjoueur].emplacement.y=A;
+    if (TableauJoueurs[premierjoueur].emplacement.y=='B') TableauJoueurs[premierjoueur].emplacement.y=B;
+    if (TableauJoueurs[premierjoueur].emplacement.y=='C') TableauJoueurs[premierjoueur].emplacement.y=C;
+    if (TableauJoueurs[premierjoueur].emplacement.y=='D') TableauJoueurs[premierjoueur].emplacement.y=D;
+    if (TableauJoueurs[premierjoueur].emplacement.y=='E') TableauJoueurs[premierjoueur].emplacement.y=E;
+    if (TableauJoueurs[premierjoueur].emplacement.y=='F') TableauJoueurs[premierjoueur].emplacement.y=F;
+    if (TableauJoueurs[premierjoueur].emplacement.y=='G') TableauJoueurs[premierjoueur].emplacement.y=G;
+    if (TableauJoueurs[premierjoueur].emplacement.y=='H') TableauJoueurs[premierjoueur].emplacement.y=H;
+    if (TableauJoueurs[premierjoueur].emplacement.y=='I') TableauJoueurs[premierjoueur].emplacement.y=I;
+    TableauJoueurs[premierjoueur].emplacement.x=17;
+    gotoligcol (TableauJoueurs[premierjoueur].emplacement.x,TableauJoueurs[premierjoueur].emplacement.y); Color(TableauJoueurs[premierjoueur].couleur,0); printf("%c", TableauJoueurs[premierjoueur].sigle);
+    gotoligcol(19,0);
+    cptj++;
+   }
 
-    Color(15,0); printf("Pour le premier joueur, saisir lettre de la case ou vous voulez commencer:\n");
-    scanf("%s",&(casee->y));
-    if (casee->y=='A') casee->y=A;
-    if (casee->y=='B') casee->y=B;
-    if (casee->y=='C') casee->y=C;
-    if (casee->y=='D') casee->y=D;
-    if (casee->y=='E') casee->y=E;
-    if (casee->y=='F') casee->y=F;
-    if (casee->y=='G') casee->y=G;
-    if (casee->y=='H') casee->y=H;
-    if (casee->y=='I') casee->y=I;
-    casee->x=17;
-    gotoligcol (casee->x,casee->y); Color(T[0].couleur,0); printf("%c", T[0].sigle); gotoligcol(21,0);
-
-
-
-/*    if (cpt==3) {
-    casee->y1=H;
-
-    printf("Pour le troisieme, saisir numero de la case ou vous voulez commencer:\n");
-    scanf("%d",&(casee->x1));
-    if (casee->x1==6) casee->x1=11;
-    if (casee->x1==7) casee->x1=13;
-    if (casee->x1==8) casee->x1=15;
-    if (casee->x1==9) casee->x1=17;
-    if (casee->x1==5) casee->x1=9;
-    if (casee->x1==3) casee->x1=5;
-    if (casee->x1==2) casee->x1=3;
-    if (casee->x1==4) casee->x1=7;
-
-
+    if (cptj==2)
+    {   system("cls");
+        affichePlateau(plateau); Color(15,0);
+        gotoligcol (TableauJoueurs[premierjoueur].emplacement.x,TableauJoueurs[premierjoueur].emplacement.y); Color(TableauJoueurs[premierjoueur].couleur,0); printf("%c", TableauJoueurs[premierjoueur].sigle);
+        gotoligcol(19,0);
+       Color(15,0); printf("%s, vous etes le deuxieme joueur. Veuillez saisir lettre de la case ou vous souhaitez demarrer la partie :\n",TableauJoueurs[deuxiemejoueur].nom);
+       scanf("%s",&(TableauJoueurs[deuxiemejoueur].emplacement.y));
+    if (TableauJoueurs[deuxiemejoueur].emplacement.y=='A') TableauJoueurs[deuxiemejoueur].emplacement.y=A;
+    if (TableauJoueurs[deuxiemejoueur].emplacement.y=='B') TableauJoueurs[deuxiemejoueur].emplacement.y=B;
+    if (TableauJoueurs[deuxiemejoueur].emplacement.y=='C') TableauJoueurs[deuxiemejoueur].emplacement.y=C;
+    if (TableauJoueurs[deuxiemejoueur].emplacement.y=='D') TableauJoueurs[deuxiemejoueur].emplacement.y=D;
+    if (TableauJoueurs[deuxiemejoueur].emplacement.y=='E') TableauJoueurs[deuxiemejoueur].emplacement.y=E;
+    if (TableauJoueurs[deuxiemejoueur].emplacement.y=='F') TableauJoueurs[deuxiemejoueur].emplacement.y=F;
+    if (TableauJoueurs[deuxiemejoueur].emplacement.y=='G') TableauJoueurs[deuxiemejoueur].emplacement.y=G;
+    if (TableauJoueurs[deuxiemejoueur].emplacement.y=='H') TableauJoueurs[deuxiemejoueur].emplacement.y=H;
+    if (TableauJoueurs[deuxiemejoueur].emplacement.y=='I') TableauJoueurs[deuxiemejoueur].emplacement.y=I;
+    TableauJoueurs[deuxiemejoueur].emplacement.x=1;
+    gotoligcol (TableauJoueurs[deuxiemejoueur].emplacement.x,TableauJoueurs[deuxiemejoueur].emplacement.y); Color(TableauJoueurs[deuxiemejoueur].couleur,0); printf("%c", TableauJoueurs[deuxiemejoueur].sigle);
+    gotoligcol(19,0);
+    cptj++;
     }
 
-    if (cpt==4) {
-    casee->y1=A;
+    if (a>2)
+    {
 
-    printf("Pour le quatrieme joueur, saisir numero de la case ou vous voulez commencer:\n");
-    scanf("%d",&(casee->x1));
-    if (casee->x1==6) casee->x1=11;
-    if (casee->x1==7) casee->x1=13;
-    if (casee->x1==8) casee->x1=15;
-    if (casee->x1==9) casee->x1=17;
-    if (casee->x1==5) casee->x1=9;
-    if (casee->x1==3) casee->x1=5;
-    if (casee->x1==2) casee->x1=3;
-    if (casee->x1==4) casee->x1=7;
-*/
 
+    if (cptj==3)
+    {   Color(15,0);
+        system("cls");
+        affichePlateau(plateau); Color(15,0);
+        gotoligcol (TableauJoueurs[premierjoueur].emplacement.x,TableauJoueurs[premierjoueur].emplacement.y); Color(TableauJoueurs[premierjoueur].couleur+1,0); printf("%c", TableauJoueurs[premierjoueur].sigle);
+        gotoligcol (TableauJoueurs[deuxiemejoueur].emplacement.x,TableauJoueurs[deuxiemejoueur].emplacement.y); Color(TableauJoueurs[deuxiemejoueur].couleur+1,0); printf("%c", TableauJoueurs[deuxiemejoueur].sigle);
+        gotoligcol(19,0); Color(15,0);
+    printf("%s, vous etes le troisieme joueur. Veuillez saisir numero de la case ou vous souhaitez demarrer la partie:\n", TableauJoueurs[troisiemejoueur].nom);
+    scanf("%d",&(TableauJoueurs[troisiemejoueur].emplacement.x));
+    if (TableauJoueurs[troisiemejoueur].emplacement.x==6) TableauJoueurs[troisiemejoueur].emplacement.x=11;
+    if (TableauJoueurs[troisiemejoueur].emplacement.x==7) TableauJoueurs[troisiemejoueur].emplacement.x=13;
+    if (TableauJoueurs[troisiemejoueur].emplacement.x==8) TableauJoueurs[troisiemejoueur].emplacement.x=15;
+    if (TableauJoueurs[troisiemejoueur].emplacement.x==9) TableauJoueurs[troisiemejoueur].emplacement.x=17;
+    if (TableauJoueurs[troisiemejoueur].emplacement.x==5) TableauJoueurs[troisiemejoueur].emplacement.x=9;
+    if (TableauJoueurs[troisiemejoueur].emplacement.x==3) TableauJoueurs[troisiemejoueur].emplacement.x=5;
+    if (TableauJoueurs[troisiemejoueur].emplacement.x==2) TableauJoueurs[troisiemejoueur].emplacement.x=3;
+    if (TableauJoueurs[troisiemejoueur].emplacement.x==4) TableauJoueurs[troisiemejoueur].emplacement.x=7;
+    TableauJoueurs[troisiemejoueur].emplacement.y=I;
+    gotoligcol (TableauJoueurs[troisiemejoueur].emplacement.x,TableauJoueurs[troisiemejoueur].emplacement.y); Color(TableauJoueurs[troisiemejoueur].couleur+1,0); printf("%c",TableauJoueurs[troisiemejoueur].sigle);
+    gotoligcol(19,0);
+    cptj++;
+    }
+
+    if (cptj==4)
+        {
+    Color(15,0);
+    system("cls");
+    affichePlateau(plateau); Color(15,0);
+    gotoligcol (TableauJoueurs[premierjoueur].emplacement.x,TableauJoueurs[premierjoueur].emplacement.y); Color(TableauJoueurs[premierjoueur].couleur+1,0); printf("%c", TableauJoueurs[premierjoueur].sigle);
+    gotoligcol (TableauJoueurs[deuxiemejoueur].emplacement.x,TableauJoueurs[deuxiemejoueur].emplacement.y); Color(TableauJoueurs[deuxiemejoueur].couleur+1,0); printf("%c", TableauJoueurs[deuxiemejoueur].sigle);
+    gotoligcol (TableauJoueurs[troisiemejoueur].emplacement.x,TableauJoueurs[troisiemejoueur].emplacement.y); Color(TableauJoueurs[troisiemejoueur].couleur+1,0); printf("%c",TableauJoueurs[troisiemejoueur].sigle);
+    gotoligcol(19,0); Color(15,0);
+    printf("%s, vous etes le quatrieme joueur. Veuillez  saisir numero de la case ou vous souhaitez demarrer la partie: \n", TableauJoueurs[quatriemejoueur].nom);
+    scanf("%d",&(TableauJoueurs[quatriemejoueur].emplacement.x));
+    if (TableauJoueurs[quatriemejoueur].emplacement.x==6) TableauJoueurs[quatriemejoueur].emplacement.x=11;
+    if (TableauJoueurs[quatriemejoueur].emplacement.x==7) TableauJoueurs[quatriemejoueur].emplacement.x=13;
+    if (TableauJoueurs[quatriemejoueur].emplacement.x==8) TableauJoueurs[quatriemejoueur].emplacement.x=15;
+    if (TableauJoueurs[quatriemejoueur].emplacement.x==9) TableauJoueurs[quatriemejoueur].emplacement.x=17;
+    if (TableauJoueurs[quatriemejoueur].emplacement.x==5) TableauJoueurs[quatriemejoueur].emplacement.x=9;
+    if (TableauJoueurs[quatriemejoueur].emplacement.x==3) TableauJoueurs[quatriemejoueur].emplacement.x=5;
+    if (TableauJoueurs[quatriemejoueur].emplacement.x==2) TableauJoueurs[quatriemejoueur].emplacement.x=3;
+    if (TableauJoueurs[quatriemejoueur].emplacement.x==4) TableauJoueurs[quatriemejoueur].emplacement.x=7;
+    TableauJoueurs[quatriemejoueur].emplacement.y=A;
+    gotoligcol(TableauJoueurs[quatriemejoueur].emplacement.x,TableauJoueurs[quatriemejoueur].emplacement.y);Color(TableauJoueurs[quatriemejoueur].couleur+1,0); printf("%c",TableauJoueurs[quatriemejoueur].sigle);
+    gotoligcol(19,0);
+    }
+
+}
+}
+
+ void Partie (int a,int premierjoueur, int deuxiemejoueur, int troisiemejoueur, int quatriemejoueur,t_joueur *TableauJoueurs,int compteur, t_positionm TableauPositionMur, int compteurmur)
+{   int cptj=1;
+    //FILE *fichierPartie=fopen("PartieEnCours.txt","w+"); // Ouverture en w+ pour qu'à chaque fois qu'un joueur joue le fichier soit mis à jour "Automatiquement"
+    printf("%s %d %c %d", TableauJoueurs[premierjoueur].nom, TableauJoueurs[premierjoueur].couleur, TableauJoueurs[premierjoueur].sigle,TableauJoueurs[premierjoueur].score);
+    if (compteur==0)
+    {
+        choixpremiereposition1(a,cptj,premierjoueur,deuxiemejoueur,troisiemejoueur,quatriemejoueur,TableauJoueurs);
+        compteur++;
+    }
+
+    /*if (a=2)
+    {
+        while (((TableauJoueurs[premierjoueur].emplacement.x)!=1) && ((TableauJoueurs[deuxiemejoueur].emplacement.x)!=17) && TableauJoueurs[troisiemejoueur].emplacement.y!=)
+        {
+
+        }
+    }*/
 
 }
 
 
-void partie()
+void partie(int a)
 {
 
     t_joueur T[0];
@@ -837,8 +873,8 @@ void partie()
     t_position casee2;
     t_position piioonn;
 
-    choixpremiereposition1(&casee1,&T[0]);
-    choixpremiereposition2(&casee2,&T[0]);
+    //choixpremiereposition1(&casee1,&T[0]);
+    //choixpremiereposition2(&casee2,&T[0]);
 
     int c,d;
     t_positionm mur1;
@@ -926,19 +962,22 @@ int main()
     int lig=19;
     int col=56;
     int choix;
-    int choix2;
-    int choix3;
+    t_joueur T[0];
+    //int choix2;
+    //int choix3;
+    t_joueur *TableauJoueurs = NULL;
+    t_positionm *TableauPositionMur[19]=NULL;
     //printf(inputNbJoueurs();
     affichePlateau(&plat);
     t_position pion1;
     t_position pion2;
     t_joueur premier;
     t_joueur second;
-    //choix=menu();
-    //menup();
+     t_positionm mur;
 
+    choix=menu();
+    menup();
 
-    partie();
 
 
 

@@ -60,6 +60,7 @@ KKK 4 2 0
 HHHHHH 10 4 0
 FFF 4 2 0
 UUU 10 4 0
+<<<<<<< HEAD
 Snoopy 0 7 2 0
 Junior 3 9 0
 AAAAAAAAAAAAAAAAAAAAAA 7 2 0
@@ -142,3 +143,9 @@ Lydia 12 6 0
 Sana 15 15 0
 Naiss 7 1 0
 Owi 5 16 0
+=======
+cdcds 2 2 0
+CDECS 1 5 0
+grgt 1 1 0
+EFVSF 3 3 0
+>>>>>>> 910164eca46bf3125f30f804eea998473aede187

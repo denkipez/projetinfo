@@ -25,6 +25,9 @@ mycoord.X = col;
 mycoord.Y = lig;
 SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mycoord );
 }
+
+
+
 void Color(int couleurDuTexte,int couleurDeFond)
 {
     HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
@@ -51,10 +54,21 @@ typedef struct joueur
     int couleur;
     int *score;
     int *nmbrMur;
+    int *nmbrMurres;
     char sigle;
     t_position emplacement;
 
 }t_joueur;
+void coter(int a,t_joueur T[a])
+{
+    gotoligcol(1,65);Color(15,0);printf("Nombres de joueurs : %d",a);
+    gotoligcol(3,65); printf("               ");gotoligcol(3,65);Color(15,0);printf("Joueur : "); Color(T[a].couleur,0); printf("%s", T[a].nom);
+    gotoligcol(5,65);Color(15,0);printf("Score partie : %d", T[a].score);
+    gotoligcol(7,65);Color(15,0);printf("Jeton : "); Color(T[a].couleur,0); printf("%c", T[a].sigle);
+    gotoligcol(9,65);Color(15,0);printf("Barrieres restantes : ");Color(T[a].couleur,0); printf("%d", T[a].nmbrMurres);
+
+}
+
 
 void infonewpartie(t_joueur* premier, t_joueur* second)
 {
@@ -565,18 +579,20 @@ void menup()
 
 }
 
+
+
 void choixpremiereposition2(t_position *caseee, t_joueur T[1])
 {
 
-int A=5;
-int B=11;
-int C=17;
-int D=23;
-int E=29;
-int F=35;
-int G=41;
-int H=47;
-int I=53;
+    int A=5;
+    int B=11;
+    int C=17;
+    int D=23;
+    int E=29;
+    int F=35;
+    int G=41;
+    int H=47;
+    int I=53;
 
     Color(15,0); gotoligcol(30,0);printf("Pour le second joueur, saisir lettre de la case ou vous voulez commencer:\n");
     scanf("%s",&(caseee->y));
@@ -605,22 +621,22 @@ void positionpion(t_position *pion)
 typedef struct positionm
 {
     int x1, x2;
-    char y1;
-    char y2;
+    int y1;
+    int y2;
 
 }t_positionm;
 
 void positionm(t_positionm *mur)
 {
-int A=5;
-int B=11;
-int C=17;
-int D=23;
-int E=29;
-int F=35;
-int G=41;
-int H=47;
-int I=53;
+    int A=5;
+    int B=11;
+    int C=17;
+    int D=23;
+    int E=29;
+    int F=35;
+    int G=41;
+    int H=47;
+    int I=53;
 
     printf("saisir lettre premiere case:\n");
     scanf("%s",&(mur->y1));
@@ -679,8 +695,9 @@ void posibilitem(t_positionm muur,t_joueur T[0])
 
                         switch (h){
                         case 'D':
-                        gotoligcol(muur.x1,muur.y1+3); Color(T[0].couleur,0); printf("B");
-                        gotoligcol(muur.x2,muur.y2+3); Color(T[0].couleur,0); printf("B");
+                        gotoligcol(muur.x1,muur.y1+3); Color(T[0].couleur,0); printf("%c",0xDB);
+                        gotoligcol(muur.x1+1,muur.y1+3); Color(T[0].couleur,0); printf("%c",0xDB);
+                        gotoligcol(muur.x2,muur.y2+3); Color(T[0].couleur,0); printf("%c",0xDB);
                         break;
                         case 'G':
                         gotoligcol(muur.x1,muur.y1-3); Color(T[0].couleur,0); printf("B");
@@ -716,7 +733,6 @@ void possibilite(t_position piioonn,t_position *pioonn,t_joueur T[0])
     scanf("%s", &mouv);
                         switch (mouv){
                         case 'D':
-
                         gotoligcol(piioonn.x,piioonn.y); Color(15,0);printf("_");
                         piioonn.y=piioonn.y+6;
                         affichepion(piioonn,&T[0]);
@@ -762,15 +778,15 @@ void choixpremiereposition1(t_position *casee, t_joueur T[0])
 {
 
 
-int A=5;
-int B=11;
-int C=17;
-int D=23;
-int E=29;
-int F=35;
-int G=41;
-int H=47;
-int I=53;
+    int A=5;
+    int B=11;
+    int C=17;
+    int D=23;
+    int E=29;
+    int F=35;
+    int G=41;
+    int H=47;
+    int I=53;
 
 
 
@@ -823,7 +839,7 @@ void choixpremiereposition4(t_position *casee, t_joueur T[3])
     if (casee->x==2) casee->x=3;
     if (casee->x==4) casee->x=7;
     casee->y=5;
-    gotoligcol (casee->x,casee->y); Color(T[3].couleur,0); printf("%c", T[3].sigle); gotoligcol(21,0);
+    gotoligcol(casee->x,casee->y); Color(T[3].couleur,0); printf("%c", T[3].sigle); gotoligcol(21,0);
 
 
 }
@@ -833,8 +849,13 @@ void partie()
 {
 
     t_joueur T[0];
+    T[0].nmbrMurres=10;
+    T[1].nmbrMurres=10;
+
+
 
     saisiejoueurs(2,&T[0]);
+
     t_position casee1;
     t_position casee2;
     t_position piioonn;
@@ -847,11 +868,16 @@ void partie()
     t_positionm mur2;
 
 
+
+
+
    for (int i=1; i<1000; i++) {
      if (i%2!=0) {
    for ( int i=20; i<32; i++) { gotoligcol(i,0); printf("                                                                                                \n"); }
+   coter(0,&T[0]);
    gotoligcol(19,0); Color(15,0); printf("JOUEUR n1 : tapper 1 pour bouger votre pion ou 2 pour placer un mur\n");
     scanf("%d",&c);
+
     switch(c) {
 
       case 1 :
@@ -863,13 +889,16 @@ void partie()
           positionm(&mur1);
           posibilitem(mur1,&T[0]);
          for ( int i=23; i<32; i++) { gotoligcol(i,0); printf("                                                                                                \n"); }
+         printf("ici %d",T[0].nmbrMurres) ; T[0].nmbrMurres=T[0].nmbrMurres-1; printf("la %d",T[0].nmbrMurres);
          break;
      default : printf("erreur"); } }
 
    if (i%2==0) {
    for ( int i=19; i<30; i++) { gotoligcol(i,0); printf("                                                                                                \n"); }
+   coter(1,&T[0]);
    gotoligcol(19,0); Color(15,0); printf("JOUEUR n2 : tapper 1 pour bouger votre pion ou 2 pour placer un mur\n");
     scanf("%d",&d);
+
     switch(d) {
 
       case 1 :
@@ -879,6 +908,7 @@ void partie()
           positionm(&mur2);
           posibilitem(mur2,&T[1]);
           for ( int i=23; i<32; i++) { gotoligcol(i,0); printf("                                                                                                \n"); }
+          T[1].nmbrMurres--;
           break;
       default : printf("erreur");
 

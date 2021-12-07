@@ -928,6 +928,8 @@ int I=53;
     if (TableauJoueurs[deuxiemejoueur].emplacement.y=='H') TableauJoueurs[deuxiemejoueur].emplacement.y=H;
     if (TableauJoueurs[deuxiemejoueur].emplacement.y=='I') TableauJoueurs[deuxiemejoueur].emplacement.y=I;
     TableauJoueurs[deuxiemejoueur].emplacement.x=1;
+    printf("%d %d",TableauJoueurs[deuxiemejoueur].emplacement.x,TableauJoueurs[deuxiemejoueur].emplacement.y)
+    printf("%d %d", TableauJoueurs[premierjoueur].emplacement.x,TableauJoueurs[premierjoueur].emplacement.y )
     gotoligcol (TableauJoueurs[deuxiemejoueur].emplacement.x,TableauJoueurs[deuxiemejoueur].emplacement.y); Color(TableauJoueurs[deuxiemejoueur].couleur,0); printf("%c", TableauJoueurs[deuxiemejoueur].sigle);
     gotoligcol(19,0);
     cptj++;
